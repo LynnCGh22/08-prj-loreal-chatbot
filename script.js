@@ -167,9 +167,66 @@ function addMessageToWindow(role, text, isPending = false) {
   if (isPending) {
     message.dataset.pending = "true";
   }
-  message.textContent = text;
+
+  const avatar = document.createElement("div");
+  avatar.className = "msg-avatar";
+  avatar.textContent = role === "user" ? "You" : "AI";
+
+  const body = document.createElement("div");
+  body.className = "msg-body";
+
+  const bubble = document.createElement("div");
+  bubble.className = "msg-bubble";
+  if (isPending) {
+    bubble.classList.add("typing-indicator");
+    bubble.innerHTML = "<span></span><span></span><span></span>";
+  } else {
+    bubble.textContent = text;
+  }
+
+  const meta = document.createElement("div");
+  meta.className = "msg-meta";
+  meta.textContent = role === "user" ? "You" : "L'Oréal Assistant";
+
+  body.appendChild(bubble);
+  body.appendChild(meta);
+
+  message.appendChild(avatar);
+  message.appendChild(body);
+
   chatWindow.appendChild(message);
   chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function getPendingMessage() {
+  const pendingMessages = chatWindow.querySelectorAll(
+    '.msg[data-pending="true"]',
+  );
+  return pendingMessages[pendingMessages.length - 1] || null;
+}
+
+function updatePendingMessage(text) {
+  const pendingMessage = getPendingMessage();
+  if (!pendingMessage) {
+    return;
+  }
+
+  const bubble = pendingMessage.querySelector(".msg-bubble");
+  if (bubble) {
+    bubble.classList.remove("typing-indicator");
+    bubble.textContent = text;
+  }
+
+  delete pendingMessage.dataset.pending;
+}
+
+function removePendingMessage() {
+  const pendingMessage = getPendingMessage();
+  if (!pendingMessage) {
+    return;
+  }
+
+  pendingMessage.remove();
 }
 
 function renderChatWindow() {
@@ -433,23 +490,16 @@ chatForm.addEventListener("submit", async (e) => {
         "Connected to Worker, but it is not returning AI JSON yet. Check Worker code.";
     }
 
-    if (
-      activeChatId === requestChatId &&
-      chatWindow.lastElementChild?.dataset.pending === "true"
-    ) {
-      chatWindow.lastElementChild.textContent = errorMessage;
-      delete chatWindow.lastElementChild.dataset.pending;
+    if (activeChatId === requestChatId) {
+      updatePendingMessage(errorMessage);
     }
 
     alert(
       "An error occurred while fetching the AI response. Please check your network connection and the console for more details.",
     );
   } finally {
-    if (
-      activeChatId === requestChatId &&
-      chatWindow.lastElementChild?.dataset.pending === "true"
-    ) {
-      chatWindow.removeChild(chatWindow.lastElementChild);
+    if (activeChatId === requestChatId) {
+      removePendingMessage();
     }
 
     isRequestPending = false;
