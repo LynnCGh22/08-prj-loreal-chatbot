@@ -7,9 +7,12 @@ const themeToggle = document.getElementById("themeToggle");
 const logo = document.getElementById("logo");
 const body = document.body;
 
-// Find the button and gallery container on the page
-const getImagesButton = document.getElementById("getImagesButton");
-const modalCloseButton = document.getElementById("modalCloseButton");
+// Activate the chat button only when there is input
+userInput.addEventListener("input", () => {
+  chatForm.querySelector("button").disabled = userInput.value.trim() === "";
+});
+
+const API_URL = "https://your-cloudflare-worker-url.workers.dev"; // Replace with your Cloudflare Worker URL
 
 // Set initial message
 chatWindow.textContent = "👋 Hello! How can I help you today?";
