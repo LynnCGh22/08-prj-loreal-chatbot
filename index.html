@@ -16,62 +16,71 @@
   </head>
 
   <body>
-    <div class="page-wrapper">
-      <!------- Header / Branding ------->
-      <header class="site-header">
-        <h1 class="site-title">L'Oréal Chat Assistant</h1>
-        <img
-          id="logo"
-          src="img/loreal-logo.png"
-          alt="L'Oréal logo"
-          class="logo"
-        />
-      </header>
+    <div class="app-shell">
+      <aside class="history-sidebar" aria-label="Chat history">
+        <div class="history-sidebar-header">
+          <h2>Chats</h2>
+          <button id="newChatBtn" type="button">+ New Chat</button>
+        </div>
+        <ul id="historyList" class="history-list"></ul>
+      </aside>
 
-      <button
-        id="themeToggle"
-        class="theme-toggle"
-        aria-label="Toggle dark mode"
-      >
-        🌙
+      <div class="page-wrapper">
+        <!------- Header / Branding ------->
+        <header class="site-header">
+          <h1 class="site-title">L'Oréal Chat Assistant</h1>
+          <img
+            id="logo"
+            src="img/loreal-logo.png"
+            alt="L'Oréal logo"
+            class="logo"
+          />
+        </header>
+
+        <button
+          id="themeToggle"
+          class="theme-toggle"
+          aria-label="Toggle dark mode"
+        >
+          🌙
         </button>
-      </header>
 
-      <!------- Chat Area ------->
-      <main>
-        <section class="chatbox">
-          <div id="chatWindow" class="chat-window">
-            <!-- messages will be appended here via JS -->
-          </div>
+        <!------- Chat Area ------->
+        <main>
+          <section class="chatbox">
+            <div id="chatWindow" class="chat-window">
+              <!-- messages will be appended here via JS -->
+            </div>
 
-          <form id="chatForm" class="chat-form">
-            <label for="userInput" class="visually-hidden">Message</label>
-            <input
-              id="userInput"
-              name="userInput"
-              type="text"
-              placeholder="Ask me about products or routines…"
-              autocomplete="off"
-              required
-            />
-            <button type="submit" id="sendBtn">
-              <span class="material-icons">send</span>
-              <span class="visually-hidden">Send</span>
-            </button>
-          </form>
-        </section>
-      </main>
+            <form id="chatForm" class="chat-form">
+              <label for="userInput" class="visually-hidden">Message</label>
+              <input
+                id="userInput"
+                name="userInput"
+                type="text"
+                placeholder="Ask me about products or routines…"
+                autocomplete="off"
+                required
+              />
+              <button type="submit" id="sendBtn">
+                <span class="material-icons">send</span>
+                <span class="visually-hidden">Send</span>
+              </button>
+            </form>
+          </section>
+        </main>
 
-      <!------- Footer Links ------->
-      <footer class="site-footer">
-        <p>&copy; 2025 L'Oréal. All rights reserved.</p>
-        <nav>
-          <!-- These URLs are placeholders -->
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Contact</a>
-        </nav>
-      </footer>
+        <!------- Footer Links ------->
+        <footer class="site-footer">
+          <p>&copy; 2025 L'Oréal. All rights reserved.</p>
+          <nav>
+            <!-- These URLs are placeholders -->
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Contact</a>
+          </nav>
+        </footer>
+      </div>
     </div>
 
     <!-- secrets.js can be removed when using Cloudflare Workers for API requests -->
