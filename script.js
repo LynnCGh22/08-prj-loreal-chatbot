@@ -13,7 +13,7 @@ userInput.addEventListener("input", () => {
   chatForm.querySelector("button").textContent = userInput.value.trim() === "" ? "Type a message..." : "Send";
 });
 
-const API_URL = "https://divine-sea-b20e.lchaker921.workers.dev/"; // Replace with your Cloudflare Worker URL
+const workerUrl = "https://sweet-wind-0854.lchaker921.workers.dev/"; // Replace with your Cloudflare Worker URL
 
 
 // Set initial message
