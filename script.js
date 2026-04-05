@@ -4,6 +4,7 @@ const userInput = document.getElementById("userInput");
 const chatWindow = document.getElementById("chatWindow");
 
 const themeToggle = document.getElementById("themeToggle");
+const logo = document.getElementById("logo");
 const body = document.body;
 
 // Find the button and gallery container on the page
@@ -28,6 +29,7 @@ chatForm.addEventListener("submit", (e) => {
 const savedTheme = localStorage.getItem("theme") || "light";
 if (savedTheme === "dark") {
   body.classList.add("dark-mode");
+  logo.src = "img/loreal-logo-black-and-white.png"; // Use white logo for dark mode
   themeToggle.textContent = "☀️"; // Show sun icon to let user switch to light mode
 } else {
   themeToggle.textContent = "🌙"; // Show moon icon to let user switch to dark mode
@@ -37,11 +39,13 @@ if (savedTheme === "dark") {
 themeToggle.addEventListener("click", () => {
   body.classList.toggle("dark-mode"); // Toggle the dark-mode class
 
-  // Update the button icon based on the new mode
+  // Update the button icon and logo based on the new mode
   if (body.classList.contains("dark-mode")) {
+    logo.src = "img/loreal-logo-black-and-white.png"; // Use white logo for dark mode
     themeToggle.textContent = "☀️"; // Show sun icon to let user switch to light mode
     localStorage.setItem("theme", "dark"); // Save preference
   } else {
+    logo.src = "img/loreal-logo.png"; // Use black logo for light mode
     themeToggle.textContent = "🌙"; // Show moon icon to let user switch to dark mode
     localStorage.setItem("theme", "light"); // Save preference
   }
