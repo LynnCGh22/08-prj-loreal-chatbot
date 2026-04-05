@@ -11,6 +11,74 @@ body {
   color: #333;
   display: flex;
   justify-content: center;
+  background: #fff;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+
+/* Dark mode theme */
+body.dark-mode {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+body.dark-mode .chat-window {
+  background: #2a2a2a;
+  border-color: #e0e0e0;
+  color: #e0e0e0;
+}
+
+body.dark-mode .chat-window .msg.ai {
+  color: #b0b0b0;
+}
+
+body.dark-mode .chat-form input {
+  background: #333;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+body.dark-mode .chat-form input:focus {
+  outline-color: #e0e0e0;
+}
+
+body.dark-mode .site-footer {
+  color: #999;
+}
+
+body.dark-mode .site-footer a {
+  color: #e0e0e0;
+}
+
+body.dark-mode .site-footer a:hover {
+  color: #999;
+}
+
+body.dark-mode .chat-form button:focus {
+  outline-color: #e0e0e0;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  transition: transform 0.2s;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+body.dark-mode .theme-toggle:focus {
+  outline-color: #e0e0e0;
 }
 
 /* Logo */
