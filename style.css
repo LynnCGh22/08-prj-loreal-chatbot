@@ -84,9 +84,7 @@ body.dark-mode .theme-toggle:focus {
 /* Logo */
 .logo {
   width: clamp(90px, 18vw, 140px);
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 50%;
+  object-fit: contain;
   display: block;
 }
 
