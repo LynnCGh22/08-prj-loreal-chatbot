@@ -8,12 +8,54 @@ const themeToggle = document.getElementById("themeToggle");
 const logo = document.getElementById("logo");
 const body = document.body;
 
+const CHAT_HISTORY_KEY = "lorealChatHistory";
+const MAX_STORED_MESSAGES = 30;
+
+let conversationHistory = [];
+
+function loadConversationHistory() {
+  const rawHistory = localStorage.getItem(CHAT_HISTORY_KEY);
+  if (!rawHistory) {
+    return [];
+  }
+
+  try {
+    const parsedHistory = JSON.parse(rawHistory);
+    if (!Array.isArray(parsedHistory)) {
+      return [];
+    }
+
+    // Keep only valid role/content entries so bad data does not break chat rendering.
+    return parsedHistory.filter(
+      (item) =>
+        item &&
+        (item.role === "user" || item.role === "ai") &&
+        typeof item.content === "string" &&
+        item.content.trim() !== "",
+    );
+  } catch {
+    return [];
+  }
+}
+
+function saveConversationHistory() {
+  const trimmedHistory = conversationHistory.slice(-MAX_STORED_MESSAGES);
+  conversationHistory = trimmedHistory;
+  localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(trimmedHistory));
+}
+
 function addMessageToHistory(role, text) {
   const message = document.createElement("div");
   message.className = `msg ${role}`;
   message.textContent = text;
   chatWindow.appendChild(message);
   chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function addMessageAndPersist(role, text) {
+  addMessageToHistory(role, text);
+  conversationHistory.push({ role, content: text });
+  saveConversationHistory();
 }
 
 function updateSendButton() {
@@ -28,8 +70,16 @@ userInput.addEventListener("input", () => {
 
 const workerUrl = "https://sweet-wind-0854.lchaker921.workers.dev/"; // Replace with your Cloudflare Worker URL
 
-// Set initial message
-chatWindow.textContent = "Hi there! How can I help you today?";
+// Restore previous conversation from local storage.
+conversationHistory = loadConversationHistory();
+if (conversationHistory.length === 0) {
+  addMessageAndPersist("ai", "Hi there! How can I help you today?");
+} else {
+  conversationHistory.forEach((message) => {
+    addMessageToHistory(message.role, message.content);
+  });
+}
+
 updateSendButton();
 
 /* Handle form submit */
@@ -41,7 +91,7 @@ chatForm.addEventListener("submit", async (e) => {
     return;
   }
 
-  addMessageToHistory("user", userQuestion);
+  addMessageAndPersist("user", userQuestion);
   userInput.value = "";
   updateSendButton();
   addMessageToHistory("ai", "Thinking...");
@@ -63,7 +113,10 @@ chatForm.addEventListener("submit", async (e) => {
             content:
               "You are a professional workplace assistant. Use a formal, serious tone. Structure responses clearly with concise sections using headings when helpful, and provide direct, practical recommendations. Avoid slang, jokes, emojis, and overly casual or comical phrasing, and do not diverge too far from the topic. Also, politely decline to answer any questions not related to L’Oréal products, routines, recommendations, beauty-related topics, or general beauty advice.",
           },
-          { role: "user", content: userQuestion },
+          ...conversationHistory.map((message) => ({
+            role: message.role === "ai" ? "assistant" : "user",
+            content: message.content,
+          })),
         ],
         max_completion_tokens: 1000, // Give the model more room so longer answers do not cut off too early
         temperature: 0.2, // Lower temperature for more focused, deterministic responses
@@ -92,7 +145,11 @@ chatForm.addEventListener("submit", async (e) => {
       data.response ||
       "No response received.";
 
-    chatWindow.lastElementChild.textContent = aiResponse;
+    // Replace the temporary "Thinking..." message with the final AI response.
+    if (chatWindow.lastElementChild) {
+      chatWindow.removeChild(chatWindow.lastElementChild);
+    }
+    addMessageAndPersist("ai", aiResponse);
   } catch (error) {
     console.error(error);
     // Show clearer guidance for the most common Cloudflare Worker setup issues.
