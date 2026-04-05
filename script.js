@@ -2,22 +2,35 @@
 const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
 const chatWindow = document.getElementById("chatWindow");
+const sendBtn = chatForm.querySelector("button");
 
 const themeToggle = document.getElementById("themeToggle");
 const logo = document.getElementById("logo");
 const body = document.body;
 
+function addMessageToHistory(role, text) {
+  const message = document.createElement("div");
+  message.className = `msg ${role}`;
+  message.textContent = text;
+  chatWindow.appendChild(message);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function updateSendButton() {
+  const hasText = userInput.value.trim() !== "";
+  sendBtn.disabled = !hasText;
+}
+
 // Activate the chat button only when there is input
 userInput.addEventListener("input", () => {
-  chatForm.querySelector("button").disabled = userInput.value.trim() === "";
-  chatForm.querySelector("button").textContent =
-    userInput.value.trim() === "" ? "Type a message..." : "Send";
+  updateSendButton();
 });
 
 const workerUrl = "https://sweet-wind-0854.lchaker921.workers.dev/"; // Replace with your Cloudflare Worker URL
 
 // Set initial message
 chatWindow.textContent = "Hi there! How can I help you today?";
+updateSendButton();
 
 /* Handle form submit */
 chatForm.addEventListener("submit", async (e) => {
@@ -28,7 +41,10 @@ chatForm.addEventListener("submit", async (e) => {
     return;
   }
 
-  chatWindow.textContent = "Thinking...";
+  addMessageToHistory("user", userQuestion);
+  userInput.value = "";
+  updateSendButton();
+  addMessageToHistory("ai", "Thinking...");
 
   // When using Cloudflare, you'll need to POST a `messages` array in the body,
   // and handle the response using: data.choices[0].message.content
@@ -69,30 +85,30 @@ chatForm.addEventListener("submit", async (e) => {
 
     // Extract and display the AI's response
     // OpenAI returns the message in: data.choices[0].message.content
-    // Set responseDiv.textContent to show this to the user
     const data = await res.json();
-    chatWindow.textContent =
+    const aiResponse =
       data.choices?.[0]?.message?.content ||
       data.reply ||
       data.response ||
       "No response received.";
-  } catch (error) {
-    //  Handle errors gracefully by doing TWO things:
-    //   1. Log the error to the console so you can debug (use console.error)
-    //   2. Show a user-friendly error message in responseDiv
 
+    chatWindow.lastElementChild.textContent = aiResponse;
+  } catch (error) {
     console.error(error);
     // Show clearer guidance for the most common Cloudflare Worker setup issues.
     if (error instanceof TypeError) {
-      chatWindow.textContent =
+      chatWindow.lastElementChild.textContent =
         "Connection blocked. This is usually a CORS issue in your Cloudflare Worker.";
     } else if (error instanceof Error && error.message.includes("non-JSON")) {
-      chatWindow.textContent =
+      chatWindow.lastElementChild.textContent =
         "Connected to Worker, but it is not returning AI JSON yet. Check Worker code.";
     } else {
-      chatWindow.textContent = "Sorry, something went wrong. Please try again.";
+      chatWindow.lastElementChild.textContent =
+        "Sorry, something went wrong. Please try again.";
     }
-    alert("An error occurred while fetching the AI response. Please check your network connection and the console for more details.",);
+    alert(
+      "An error occurred while fetching the AI response. Please check your network connection and the console for more details.",
+    );
   }
 });
 
