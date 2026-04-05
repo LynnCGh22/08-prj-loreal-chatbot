@@ -10,6 +10,7 @@ const body = document.body;
 // Activate the chat button only when there is input
 userInput.addEventListener("input", () => {
   chatForm.querySelector("button").disabled = userInput.value.trim() === "";
+  chatForm.querySelector("button").textContent = userInput.value.trim() === "" ? "Type a message..." : "Send";
 });
 
 const API_URL = "https://your-cloudflare-worker-url.workers.dev"; // Replace with your Cloudflare Worker URL
