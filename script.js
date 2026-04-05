@@ -49,7 +49,7 @@ chatForm.addEventListener("submit", async (e) => {
           },
           { role: "user", content: userQuestion },
         ],
-        max_completion_tokens: 300, // Limit response length for better performance and more direct responses
+        max_completion_tokens: 500, // Limit response length for better performance and more direct responses
         temperature: 0.2, // Lower temperature for more focused, deterministic responses
         frequency_penalty: 0.2, // Slightly discourage repetition for more varied responses
         presence_penalty: 0.2, // Slightly encourage diversity for more varied responses
