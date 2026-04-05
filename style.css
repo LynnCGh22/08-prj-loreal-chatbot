@@ -6,12 +6,21 @@
 }
 
 /* —— body + fonts —— */
+:root {
+  --brand-black: #000000;
+  --brand-white: #ffffff;
+  --brand-red: #b00020;
+  --brand-gold: #b48a1f;
+  --brand-red-muted: #7f2b33;
+  --brand-gold-muted: #8a6a2a;
+}
+
 body {
-  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+  font-family: "Helvetica", Arial, sans-serif;
   color: #333;
   display: flex;
   justify-content: center;
-  background: #fff;
+  background: var(--brand-white);
   transition:
     background 0.3s,
     color 0.3s;
@@ -64,7 +73,8 @@ body.dark-mode .chat-form button:focus {
   top: 20px;
   right: 20px;
   background: none;
-  border: 2px solid #000;
+  border: 2px solid var(--brand-gold);
+  color: var(--brand-red);
   font-size: 24px;
   cursor: pointer;
   padding: 8px 12px;
@@ -74,7 +84,8 @@ body.dark-mode .chat-form button:focus {
 }
 
 body.dark-mode .theme-toggle {
-  border-color: #e0e0e0;
+  border-color: var(--brand-gold-muted);
+  color: var(--brand-red-muted);
 }
 
 .theme-toggle:hover {
@@ -82,12 +93,12 @@ body.dark-mode .theme-toggle {
 }
 
 .theme-toggle:focus {
-  outline: 2px solid #000;
+  outline: 2px solid var(--brand-gold);
   outline-offset: 2px;
 }
 
 body.dark-mode .theme-toggle:focus {
-  outline-color: #e0e0e0;
+  outline-color: var(--brand-gold-muted);
 }
 
 /* Logo */
@@ -112,6 +123,7 @@ body.dark-mode .theme-toggle:focus {
   font-size: 22px;
   font-weight: 500;
   margin-bottom: 10px;
+  color: var(--brand-gold);
 }
 
 /* chat window */
@@ -121,7 +133,7 @@ body.dark-mode .theme-toggle:focus {
 
 .chat-window {
   height: 360px;
-  border: 1px solid #000;
+  border: 1px solid var(--brand-red);
   padding: 20px;
   font-size: 18px;
   line-height: 1.5;
@@ -137,7 +149,7 @@ body.dark-mode .theme-toggle:focus {
 }
 
 .msg.user {
-  color: #000;
+  color: var(--brand-red);
 }
 
 .msg.ai {
@@ -159,14 +171,14 @@ body.dark-mode .theme-toggle:focus {
 }
 
 .chat-form input:focus {
-  outline: 2px solid #000;
+  outline: 2px solid var(--brand-gold);
   outline-offset: 2px;
 }
 
 .chat-form button {
   font-size: 18px;
-  background: #000;
-  color: #fff;
+  background: var(--brand-red);
+  color: var(--brand-white);
   border: none;
   padding: 12px;
   width: 48px;
@@ -183,11 +195,11 @@ body.dark-mode .theme-toggle:focus {
 }
 
 .chat-form button:hover {
-  background: #666666;
+  background: var(--brand-gold);
 }
 
 .chat-form button:focus {
-  outline: 2px solid #000;
+  outline: 2px solid var(--brand-red);
   outline-offset: 2px;
 }
 
@@ -218,10 +230,40 @@ body.dark-mode .theme-toggle:focus {
 
 .site-footer a {
   margin: 0 8px;
-  color: #000;
+  color: var(--brand-red);
   text-decoration: none;
 }
 
 .site-footer a:hover {
-  color: #666666;
+  color: var(--brand-gold);
+}
+
+body.dark-mode .site-title {
+  color: var(--brand-gold-muted);
+}
+
+body.dark-mode .chat-window {
+  border-color: var(--brand-red-muted);
+}
+
+body.dark-mode .msg.user {
+  color: var(--brand-red-muted);
+}
+
+body.dark-mode .chat-form button {
+  background: #2b2b2b;
+  color: var(--brand-gold-muted);
+  border: 1px solid var(--brand-red-muted);
+}
+
+body.dark-mode .chat-form button:hover {
+  background: #3a3a3a;
+}
+
+body.dark-mode .site-footer a {
+  color: var(--brand-gold-muted);
+}
+
+body.dark-mode .site-footer a:hover {
+  color: var(--brand-red-muted);
 }
