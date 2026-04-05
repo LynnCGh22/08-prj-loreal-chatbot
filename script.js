@@ -3,6 +3,13 @@ const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
 const chatWindow = document.getElementById("chatWindow");
 
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+
+// Find the button and gallery container on the page
+const getImagesButton = document.getElementById('getImagesButton');
+const modalCloseButton = document.getElementById('modalCloseButton');
+
 // Set initial message
 chatWindow.textContent = "👋 Hello! How can I help you today?";
 
@@ -16,3 +23,12 @@ chatForm.addEventListener("submit", (e) => {
   // Show message
   chatWindow.innerHTML = "Connect to the OpenAI API for a response!";
 });
+
+// Update the button icon based on the current mode
+  if (body.classList.contains('dark-mode')) {
+    themeToggle.textContent = '☀️'; // Show sun icon to let user switch to light mode
+    localStorage.setItem('theme', 'dark'); // Save preference
+  } else {
+    themeToggle.textContent = '🌙'; // Show moon icon to let user switch to dark mode
+    localStorage.setItem('theme', 'light'); // Save preference
+  }
